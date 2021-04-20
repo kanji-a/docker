@@ -1,0 +1,2 @@
+alias oj-test-python='oj t -c "python3 main.py"'
+export PATH=$PATH:/usr/local/lib/python3.8/site-packages/atcoder
