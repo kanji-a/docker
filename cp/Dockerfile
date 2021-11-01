@@ -24,9 +24,6 @@ RUN wget https://raw.githubusercontent.com/kanji-a/competitive_programming/maste
 RUN wget https://raw.githubusercontent.com/kanji-a/competitive_programming/master/templates/atcoder-cli/python/template.json -O `acc config-dir`/python/template.json
 RUN acc config default-template python
 
-# oh-my-zsh
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
-
 # シェル設定ファイル追記
 COPY shell_config /usr/src/app
 RUN cat shell_config >> ~/.zshrc

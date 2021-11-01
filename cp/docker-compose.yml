@@ -1,0 +1,7 @@
+version: '3'
+services:
+  cp:
+    build: .
+    tty: true
+    volumes:
+      - ~/src/github.com/kanji-a/competitive_programming:/code
