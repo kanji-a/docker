@@ -3,10 +3,24 @@ FROM python:3.8.2-buster
 
 WORKDIR /usr/src/app
 
+# ユーザー作成
+# RUN groupadd -r group && useradd -r -g group user
+# USER user
+
 # aptインストール
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get update
-RUN apt-get install -y zsh nodejs neovim
+RUN apt update
+RUN apt install -y zsh nodejs neovim
+
+# シェルをzshに変更
+SHELL ["/bin/zsh", "-c"]
+
+# preztoインストール
+# RUN zsh
+RUN git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+RUN setopt EXTENDED_GLOB
+RUN for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"; done
+# RUN chsh -s /bin/zsh
 
 # neovimの設定
 RUN mkdir -p $HOME/.config/nvim
