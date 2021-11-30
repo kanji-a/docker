@@ -3,24 +3,21 @@ FROM python:3.8.2-buster
 
 WORKDIR /usr/src/app
 
-# ユーザー作成
-# RUN groupadd -r group && useradd -r -g group user
-# USER user
-
 # aptインストール
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt update
 RUN apt install -y zsh nodejs neovim
+# RUN apt upgrade -y
 
 # シェルをzshに変更
 SHELL ["/bin/zsh", "-c"]
 
 # preztoインストール
-# RUN zsh
 RUN git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
-RUN setopt EXTENDED_GLOB
-RUN for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"; done
-# RUN chsh -s /bin/zsh
+RUN runcoms=("${ZDOTDIR:-$HOME}/.zprezto/runcoms/zlogin" "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zlogout" "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zpreztorc" "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zprofile" "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshenv" "${ZDOTDIR:-$HOME}/.zprezto/runcoms/zshrc")
+RUN for rcfile in $runcoms; do ln -sf "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"; done
+RUN zsh
+# TODO: preztoの補完などの設定変更
 
 # neovimの設定
 RUN mkdir -p $HOME/.config/nvim
